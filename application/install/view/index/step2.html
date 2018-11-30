@@ -1,0 +1,34 @@
+{extend name='public:layout'}
+{block name='content'}
+<section class="section">
+	<div class="step">
+		<ul class="unstyled">
+			<li class="current"><em>1</em>检测环境</li>
+			<li><em>2</em>创建数据</li>
+			<li><em>3</em>完成安装</li>
+		</ul>
+	</div>
+	<div class="sever">
+		<table width="100%">
+			<tr>
+				<td class="td1">环境检测</td>
+				<td class="td1" width="25%">推荐配置</td>
+				<td class="td1" width="25%">最低要求</td>
+				<td class="td1" width="25%">当前状态</td>
+			</tr>
+			<tr><td class="td2" colspan="4">环境需求检测</td></tr>
+			{volist name="env" id="item1"}
+	        <tr>
+	            <td>{$item1[0]}</td>
+	            <td>{$item1[2]}</td>
+	            <td>{$item1[1]}</td>
+	            <td>
+	                <i class="fa fa-{$item1[4]}"></i> {$item1[3]}
+	            </td>
+	        </tr>
+	        {/volist}
+			<tr><td class="td2" colspan="4">文件读写检测</td></tr>
+		</table>
+	</div>
+</section>
+{/block}
