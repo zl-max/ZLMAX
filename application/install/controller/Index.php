@@ -39,12 +39,8 @@ class Index extends Controller
         session('error',false);
         session('step',2);
         //检测环境
-        $env=check_env();
-        $files=check_dirfile();
-        $funcs=check_func();
+        $env=total_env();
         $this->assign('env',$env);
-        $this->assign('files',$files);
-        $this->assign('funcs',$funcs);
         return $this->fetch('step2');
     }
 }

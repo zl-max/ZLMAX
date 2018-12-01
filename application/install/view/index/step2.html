@@ -10,54 +10,25 @@
 	</div>
 	<div class="sever">
 		<table width="100%">
-			<tr>
-				<td class="td1">环境检测</td>
-				<td class="td1" width="25%">推荐配置</td>
-				<td class="td1" width="25%">最低要求</td>
-				<td class="td1" width="25%">当前状态</td>
-			</tr>
 			{volist name="env" id="item1"}
-	        <tr>
-	            <td>{$item1[0]}</td>
-	            <td>{$item1[2]}</td>
-	            <td>{$item1[1]}</td>
-	            <td>
-	                <i class="fa fa-{$item1[4]}"></i> {$item1[3]}
-	            </td>
-	        </tr>
+			{if $item1[3]=='当前状态'}
+		        <tr>
+		            <td class="td1">{$item1[0]}</td>
+		            <td class="td1">{$item1[2]}</td>
+		            <td class="td1">{$item1[1]}</td>
+		            <td class="td1">{$item1[3]}</td>
+		        </tr>
+	        {else/}
+	        	<tr>
+		            <td>{$item1[0]}</td>
+		            <td>{$item1[2]}</td>
+		            <td>{$item1[1]}</td>
+		            <td>
+		                <i class="fa fa-{$item1[4]}"></i> {$item1[3]}
+		            </td>		        
+		        </tr>
+	        {/if}
 	        {/volist}
-	        <tr>
-				<td class="td1">文件名称</td>
-				<td class="td1" width="25%">文件类型</td>
-				<td class="td1" width="25%">文件要求</td>
-				<td class="td1" width="25%">当前状态</td>
-			</tr>
-			{volist name="files" id="item2"}
-			<tr>
-				<td>{$item2[0]}</td>
-				<td>{$item2[1]}</td>
-				<td>{$item2[4]}</td>
-				<td>
-					<i class="fa fa-{$item2[3]}"></i> {$item2[2]}
-				</td>
-			</tr>
-			{/volist}
-			<tr>
-				<td class="td1">函数名称</td>
-				<td class="td1" width="25%">函数类型</td>
-				<td class="td1" width="25%">函数要求</td>
-				<td class="td1" width="25%">当前状态</td>
-			</tr>
-			{volist name="funcs" id="item3"}
-			<tr>
-				<td>{$item3[0]}</td>
-				<td>{$item3[1]}</td>
-				<td>{$item3[2]}</td>
-				<td>
-					<i class="fa fa-{$item3[4]}"></i> {$item3[3]}
-				</td>
-			</tr>
-			{/volist}
 		</table>
 	</div>
 	<div class="bottom text-center">

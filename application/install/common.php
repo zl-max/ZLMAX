@@ -8,14 +8,20 @@
 // +----------------------------------------------------------------------
 // | Author: Z.L <582152734@qq.com>
 // +----------------------------------------------------------------------
+
+//环境检测合并
+function total_env(){
+	return array_merge(check_env(),check_dirfile(),check_func());
+}
 //检测环境变量
 function check_env(){
 	$items=array(
-		'os'	=>	array('操作系统' , '不限制' , 'Unix' , PHP_OS , 'check'),
-		'php'	=>  array('php版本'  , '5.5' , '5.5+' , PHP_VERSION , 'check'),
-		'upload'=>	array('文件上传' , '不限制' , '2M+', '未知' , 'check'),
-		'gd'	=>	array('GD库' , '2.0' , '2.0+' , '未知' ,'check'),
-		'disk'	=>  array('磁盘空间' , '100MB' , '100MB+' , '未知' , 'check')
+		'envir' =>array('环境检测','推荐配置','最低要求','当前状态',''),
+		'os'	=>	array('操作系统','不限制','Unix',PHP_OS,'check'),
+		'php'	=>  array('php版本','5.5','5.5+',PHP_VERSION,'check'),
+		'upload'=>	array('文件上传','不限制','2M+','未知','check'),
+		'gd'	=>	array('GD库','2.0','2.0+','未知','check'),
+		'disk'	=>  array('磁盘空间','100MB','100MB+','未知','check')
  	);
 
 	//php版本不满足
@@ -59,37 +65,38 @@ function check_env(){
 //文件读写检测
 function check_dirfile(){
 	$files=array(
-		array('application' , 'dir' , '可读写' , 'check' , '可读写'),
-		array('public/static' , 'dir' , '可读写' , 'check' , '可读写'),
-		array('public/upload' , 'dir' , '可读写' , 'check' , '可读写'),
-		array('data/backup' , 'dir' , '可读写' , 'check' , '可读写')
+		array('文件名称','文件类型','文件要求','当前状态',''),
+		array('application','可读写','dir','可读写','check'),
+		array('public/static','可读写','dir','可读写','check'),
+		array('public/upload','可读写','dir','可读写','check'),
+		array('data/backup','可读写','dir','可读写','check')
 	);
 
 	foreach ($files as  $value) {
 		// 取出路径
 		$dir=ROOT_PATH.$value[0];
-		if($value[1]=='dir') //文件夹检查
+		if($value[2]=='dir') //文件夹检查
 		{
 			if(!is_writable($dir))  //存在并且可写返回true
 			{
 				if(is_dir($dir)){
-					$value[2]='不可写';
+					$value[3]='不可写';
 				}else{
-					$value[2]='不存在';
+					$value[3]='不存在';
 				}
-				$value[3]='times text-warning';
+				$value[4]='times text-warning';
 				session('error',true);
 			}
-		}else{
+		}elseif($value[2]=='file'){
 			if(file_exists($dir)){
 				if(!is_writable($dir)){
-					$value[2]='不可写';
-					$value[3]='times text-warning';
+					$value[3]='不可写';
+					$value[4]='times text-warning';
 					session('error',true);
 				}
 			}else{
-					$value[2]='不存在';
-					$value[3]='times text-warning';
+					$value[3]='不存在';
+					$value[4]='times text-warning';
 					session('error',true);
 			}
 		}
@@ -99,19 +106,20 @@ function check_dirfile(){
 //检测类和函数等是否可用
 function check_func(){
 	$funcs=array(
-		array('PDO','类','开启','开启','check'),
-		array('pdo_mysql','模块','开启','开启','check'),
-		array('phpinfo','模块','开启','开启','check'),
-		array('mb_strlen','函数','开启','开启','check'),
-		array('file_get_contents','函数','开启','开启','check'),
-		array('session','其他','开启','开启','check')
+		array('函数名称','函数类型','函数要求','当前状态',''),
+		array('PDO','开启','类','开启','check'),
+		array('pdo_mysql','开启','模块','开启','check'),
+		array('phpinfo','开启','模块','开启','check'),
+		array('mb_strlen','开启','函数','开启','check'),
+		array('file_get_contents','开启','函数','开启','check'),
+		array('session','开启','其他','开启','check')
 	);
 
 	foreach ($funcs as $value) {
-		if(($value[1]=='类'&& !class_exists($value[0]))||
-		($value[1]=='模块'&& !extension_loaded($value[0]))||
-		($value[1]=='函数'&& !class_exists($value[0]))||
-		($value[1]=='session'&& !session_status()))
+		if(($value[2]=='类'&& !class_exists($value[0]))||
+		($value[2]=='模块'&& !extension_loaded($value[0]))||
+		($value[2]=='函数'&& !class_exists($value[0]))||
+		($value[0]=='session'&& !session_status()))
 		{
 			$value[3]='未开启';
 			$value[4]='times text-warning';
