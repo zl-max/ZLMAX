@@ -16,7 +16,6 @@
 				<td class="td1" width="25%">最低要求</td>
 				<td class="td1" width="25%">当前状态</td>
 			</tr>
-			<tr><td class="td2" colspan="4">环境需求检测</td></tr>
 			{volist name="env" id="item1"}
 	        <tr>
 	            <td>{$item1[0]}</td>
@@ -27,7 +26,22 @@
 	            </td>
 	        </tr>
 	        {/volist}
-			<tr><td class="td2" colspan="4">文件读写检测</td></tr>
+	        <tr>
+				<td class="td1">文件名称</td>
+				<td class="td1" width="25%">文件类型</td>
+				<td class="td1" width="25%">文件要求</td>
+				<td class="td1" width="25%">当前状态</td>
+			</tr>
+			{volist name="files" id="item2"}
+			<tr>
+				<td>{$item2[0]}</td>
+				<td>{$item2[1]}</td>
+				<td>{$item2[4]}</td>
+				<td>
+					<i class="fa fa-{$item2[3]}"></i> {$item2[2]}
+				</td>
+			</tr>
+			{/volist}
 		</table>
 	</div>
 </section>

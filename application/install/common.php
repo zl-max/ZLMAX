@@ -1,4 +1,13 @@
-<?php
+<?php		
+// +----------------------------------------------------------------------
+// | ZL [ WE CAN DO IT!!!]
+// +----------------------------------------------------------------------
+// | Copyright (c) 2016~2018 Z.L All rights reserved.
+// +----------------------------------------------------------------------
+// | Licensed ( NO )
+// +----------------------------------------------------------------------
+// | Author: Z.L <582152734@qq.com>
+// +----------------------------------------------------------------------
 //检测环境变量
 function check_env(){
 	$items=array(
@@ -36,7 +45,7 @@ function check_env(){
  	//检查磁盘空间
  	if(function_exists('disk_free_space'))
  	{
- 		$disk_free=disk_free_space(ROOT_PATH)/(1024*1024).'MB';
+ 		$disk_free=floor(disk_free_space(ROOT_PATH)/(1024*1024)).'MB';
  		if(rtrim($items['disk'][1],'MB')>rtrim($disk_free,'MB'))
  		{
  			$items['disk'][4]='times text-warning';
@@ -48,6 +57,42 @@ function check_env(){
 }
 
 //文件读写检测
-function check_file(){
-	
+function check_dirfile(){
+	$files=array(
+		array('application' , 'dir' , '可读写' , 'check' , '可读写'),
+		array('public/static' , 'dir' , '可读写' , 'check' , '可读写'),
+		array('public/upload' , 'dir' , '可读写' , 'check' , '可读写'),
+		array('data/backup' , 'dir' , '可读写' , 'check' , '可读写')
+	);
+
+	foreach ($files as  &$value) {
+		// 取出路径
+		$dir=ROOT_PATH.$value[0];
+		if($value[1]=='dir') //文件夹检查
+		{
+			if(!is_writable($dir))  //存在并且可写返回true
+			{
+				if(is_dir($dir)){
+					$value[2]='不可写';
+				}else{
+					$value[2]='不存在';
+				}
+				$value[3]='times text-warning';
+				session('error',true);
+			}
+		}else{
+			if(file_exists($dir)){
+				if(!is_writable($dir)){
+					$value[2]='不可写';
+					$value[3]='times text-warning';
+					session('error',true);
+				}
+			}else{
+					$value[2]='不存在';
+					$value[3]='times text-warning';
+					session('error',true);
+			}
+		}
+	}
+	return  $files;
 }
