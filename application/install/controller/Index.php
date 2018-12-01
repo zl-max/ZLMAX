@@ -41,8 +41,10 @@ class Index extends Controller
         //检测环境
         $env=check_env();
         $files=check_dirfile();
+        $funcs=check_func();
         $this->assign('env',$env);
         $this->assign('files',$files);
+        $this->assign('funcs',$funcs);
         return $this->fetch('step2');
     }
 }

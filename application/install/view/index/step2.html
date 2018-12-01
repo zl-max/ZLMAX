@@ -42,7 +42,27 @@
 				</td>
 			</tr>
 			{/volist}
+			<tr>
+				<td class="td1">函数名称</td>
+				<td class="td1" width="25%">函数类型</td>
+				<td class="td1" width="25%">函数要求</td>
+				<td class="td1" width="25%">当前状态</td>
+			</tr>
+			{volist name="funcs" id="item3"}
+			<tr>
+				<td>{$item3[0]}</td>
+				<td>{$item3[1]}</td>
+				<td>{$item3[2]}</td>
+				<td>
+					<i class="fa fa-{$item3[4]}"></i> {$item3[3]}
+				</td>
+			</tr>
+			{/volist}
 		</table>
+	</div>
+	<div class="bottom text-center">
+		<a href="{url('install/index/step2')}" class="btn btn-primary">重新检测</a>
+		<a href="{url('install/index/step3')}" class="btn btn-primary">下一步</a>
 	</div>
 </section>
 {/block}

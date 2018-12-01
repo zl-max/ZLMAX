@@ -65,7 +65,7 @@ function check_dirfile(){
 		array('data/backup' , 'dir' , '可读写' , 'check' , '可读写')
 	);
 
-	foreach ($files as  &$value) {
+	foreach ($files as  $value) {
 		// 取出路径
 		$dir=ROOT_PATH.$value[0];
 		if($value[1]=='dir') //文件夹检查
@@ -95,4 +95,29 @@ function check_dirfile(){
 		}
 	}
 	return  $files;
+}
+//检测类和函数等是否可用
+function check_func(){
+	$funcs=array(
+		array('PDO','类','开启','开启','check'),
+		array('pdo_mysql','模块','开启','开启','check'),
+		array('phpinfo','模块','开启','开启','check'),
+		array('mb_strlen','函数','开启','开启','check'),
+		array('file_get_contents','函数','开启','开启','check'),
+		array('session','其他','开启','开启','check')
+	);
+
+	foreach ($funcs as $value) {
+		if(($value[1]=='类'&& !class_exists($value[0]))||
+		($value[1]=='模块'&& !extension_loaded($value[0]))||
+		($value[1]=='函数'&& !class_exists($value[0]))||
+		($value[1]=='session'&& !session_status()))
+		{
+			$value[3]='未开启';
+			$value[4]='times text-warning';
+			session('error',true);
+		}
+
+	}
+	return $funcs;
 }
