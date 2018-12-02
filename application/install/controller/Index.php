@@ -32,6 +32,7 @@ class Index extends Controller
 
     function step2(){
     	// 按顺序安装
+         
     	if(session('step')!==1&&session('step')!==3&&session('step')!==2)
     	{
     		header('Location:'.url('install'));
@@ -42,5 +43,9 @@ class Index extends Controller
         $env=total_env();
         $this->assign('env',$env);
         return $this->fetch('step2');
+    }
+
+    function step3(){
+        return $this->fetch('step3');
     }
 }
