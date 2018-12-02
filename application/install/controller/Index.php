@@ -27,15 +27,15 @@ class Index extends Controller
     {
     	session('step',1);
     	session('error',false);
+        session('name','zhangsan');
         return $this->fetch('step1');
     }
 
     function step2(){
-    	// 按顺序安装
-         
-    	if(session('step')!==1&&session('step')!==3&&session('step')!==2)
+    	// 按顺序安装       
+    	if(session('step')!=1&&session('step')!=3&&session('step')!=2)
     	{
-    		header('Location:'.url('install'));
+    		$this->redirect($this->request->baseFile());
     	}
         session('error',false);
         session('step',2);
@@ -46,6 +46,12 @@ class Index extends Controller
     }
 
     function step3(){
+        //请按步骤安装
+        if(session('step')!=2 && session('step')!=3)
+        {
+            $this->redirect($this->request->baseFile());
+        } 
+             
         return $this->fetch('step3');
     }
 }

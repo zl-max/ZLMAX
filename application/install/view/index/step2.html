@@ -33,7 +33,7 @@
 	</div>
 	<div class="bottom text-center">
 		<a href="{:url('install/index/step2')}" class="btn btn-primary">重新检测</a>
-		<a href="{:url('install/index/step3')}" class="btn btn-primary">下一步</a>
+		<a href="{$Think.session.error?'':url('install/index/step3')}" class="btn btn-primary check_next">下一步</a>
 	</div>
 </section>
 {/block}

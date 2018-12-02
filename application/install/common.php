@@ -25,7 +25,7 @@ function check_env(){
  	);
 
 	//php版本不满足
- 	if($items['php'][1]> $items['php'][3])
+ 	if($items['php'][1]<$items['php'][3])
  	{
  		$items['php'][4]='times text-warning';
  		session('error',true);
