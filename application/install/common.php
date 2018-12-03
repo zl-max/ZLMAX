@@ -65,7 +65,7 @@ function check_env(){
 //文件读写检测
 function check_dirfile(){
 	$files=array(
-		array('文件名称','文件类型','文件要求','当前状态',''),
+		array('文件名称','文件要求','文件类型','当前状态',''),
 		array('application','可读写','dir','可读写','check'),
 		array('public/static','可读写','dir','可读写','check'),
 		array('public/upload','可读写','dir','可读写','check'),
@@ -106,7 +106,7 @@ function check_dirfile(){
 //检测类和函数等是否可用
 function check_func(){
 	$funcs=array(
-		array('函数名称','函数类型','函数要求','当前状态',''),
+		array('函数名称','函数要求','函数类型','当前状态',''),
 		array('PDO','开启','类','开启','check'),
 		array('pdo_mysql','开启','模块','开启','check'),
 		array('fileinfo','开启','模块','开启','check'),
