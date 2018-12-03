@@ -26,8 +26,6 @@ class Index extends Controller
     public function index()
     {
     	session('step',1);
-    	session('error',false);
-        session('name','zhangsan');
         return $this->fetch('step1');
     }
 
