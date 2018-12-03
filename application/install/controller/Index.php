@@ -52,4 +52,25 @@ class Index extends Controller
              
         return $this->fetch('step3');
     }
+
+    // 验证数据库连接是否正确
+    function testdb(){
+        if(request()->isPost()){
+            $dbconfig=input("post.");
+            $dsn = "mysql:host={$dbconfig['hostname']};port={$dbconfig['hostport']};charset=utf8";
+            try {
+                $db = new \PDO($dsn, $dbconfig['username'], $dbconfig['password']);
+            } catch (\PDOException $e) {
+                die("");
+            }
+            try{
+                $db->query("show databases;");
+            }catch (\PDOException $e){
+                die("");
+            }
+           exit("1");
+        }else{
+            exit("need post!");
+        }
+    }
 }
