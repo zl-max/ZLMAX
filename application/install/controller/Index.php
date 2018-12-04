@@ -53,6 +53,10 @@ class Index extends Controller
         return $this->fetch('step3');
     }
 
+    function step4(){
+
+    }
+
     // 验证数据库连接是否正确
     function testdb(){
         if(request()->isPost()){
@@ -68,7 +72,7 @@ class Index extends Controller
             }catch (\PDOException $e){
                 die("");
             }
-           exit("1");
+           exit("数据库连接成功");
         }else{
             exit("need post!");
         }
