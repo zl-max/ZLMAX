@@ -8,7 +8,7 @@
 			<li><em>3</em>完成安装</li>
 		</ul>
 	</div>
-	<form id="js_install_form" action="{:url('install/index/step4')}" method="post">
+	<form id="js-install-form" action="{:url('install/index/step4')}" method="post">
 		<input type="hidden" name="force" value="0">
 		<div class="server">
 			<table width="100%">
@@ -134,8 +134,7 @@
 	}
 
 
-	$(function(){
-		
+	$(function(){	
 		//聚焦时提醒
 		var focus_tips={
 			dbhost : '数据库host，一般为127.0.0.1或localhost',
@@ -149,14 +148,12 @@
 			manager_ckpwd : '',
 			manager_email : ''
 		};
-			alert(focus_tips.dbhost);
-		});
-		/*
 		var install_form = $("#js-install-form");
 
 		install_form.validate({
-		errorPlacement : function(error, element) {
-			$('#js-install-tip-' + element[0].name).html(error);
+			// 提示信息显示地方
+			errorPlacement : function(error, element) {
+				$('#js-install-tip-' + element[0].name).html(error);
 			},
 			errorElement : 'span',
 			errorClass : 'tips-error',
@@ -167,7 +164,7 @@
 				dbhost : {required : true},
 				dbport : {required : true},
 				dbuser : {required : true},
-				/* dbpw: {required	: true}, 
+				/*dbpwd: {required	: true},*/
 				dbname : {required : true},
 				dbprefix : {required : true},
 				manager : {required : true},
@@ -176,15 +173,18 @@
 				manager_email : {required : true,email : true}		
 			},
 			highlight : false,
+			// 通过验证时触发
 			unhighlight : function(element, errorClass,validClass) {
 				var tip_elem = $('#js-install-tip-'+ element.name);
 				tip_elem.html('<span class="'+ validClass +'" data-text="text"><span>');
 			},
+			// 获得焦点时触发
 			onfocusin : function(element) {
 				var name = element.name;
 				$('#js-install-tip-' + name).html('<span data-text="text">'+ focus_tips[name] + '</span>');
 				$(element).parents('tr').addClass('current');
 			},
+			// 失去焦点时触发
 			onfocusout : function(element) {
 				var _this = this;
 				$(element).parents('tr').removeClass('current');
@@ -216,6 +216,6 @@
 				return true;
 			}
 		});
-	});*/
+	});
 </script>
 {/block}

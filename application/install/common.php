@@ -129,3 +129,31 @@ function check_func(){
 	}
 	return $funcs;
 }
+
+/**
+ * 执行脚本
+ * @param  [db] $db     [数据库连接]
+ * @param  [sql] file_sql  [执行sql的文件名]
+ * @param  [type] $table_pre [表名前缀]
+ * @return ['']            [description]
+ */
+function execute_sql($db,$filename,$table_pre){
+	$sql_content=file_get_contents(APP_PATH.'install/data/'.$filename);
+	//获取的sql换行代替回车
+	$sql_content=str_replace("\r","\n",$sql_content);
+
+	//将字符串变成数组
+	$sql_content=explode(";\n", $sql_content);
+
+	//将语句中现在的前缀换成设置的前缀
+	$default_pre='zl_';
+
+	$sql_content=str_replace($default_pre,$table_pre,$sql_content);
+	
+	foreach ($sql_content as $value) {
+		$db->exec($value);
+	}
+	
+}
+
+
