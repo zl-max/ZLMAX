@@ -149,11 +149,27 @@ function execute_sql($db,$filename,$table_pre){
 	$default_pre='zl_';
 
 	$sql_content=str_replace($default_pre,$table_pre,$sql_content);
-	
+	showmsg('开始安装数据库，请等待.....');
 	foreach ($sql_content as $value) {
-		$db->exec($value);
+		$value=trim($value);
+		if(empty($value)){continue;}
+		preg_match('/CREATE TABLE `([^ ]*)`/', $value, $matches);
+		if($matches){
+			$table_name=$matches[1];
+			showmsg($table_name.' 正在创建.....');
+			$msg="创建数据库表{$table_name}";
+			if($db->exec($value)!==false)
+			{
+				showmsg($msg.'成功！');
+			}else{
+				showmsg($msg.'失败！','error');
+			}
+		}else{
+			$db->exec($value);
+		}
 	}
-	
+	complete();
 }
+
 
 

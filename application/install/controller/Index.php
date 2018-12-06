@@ -92,7 +92,9 @@ class Index extends Controller
             $dbconfig['dbprefix']=strtolower(trim(input('dbprefix')));
             $dbprefix=strtolower(trim(input('dbprefix')));
 
-            $complete_sql=execute_sql($db,'zlmax.sql',$dbprefix);
+            echo $this->fetch('step4');
+
+             execute_sql($db,'zlmax.sql',$dbprefix);
 
         }
     }
@@ -114,7 +116,7 @@ class Index extends Controller
             }
            exit("数据库连接成功");
         }else{
-            exit("need post!");
+            exit("post方式传数据!");
         }
     }
 }

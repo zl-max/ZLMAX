@@ -10,3 +10,20 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+/**
+ * @param  [string] 显示的内容 
+ * @param  [string] 是否出错   
+ * @return [string] 2秒循环显示        
+ */
+function showmsg($content,$class=''){
+	echo "<script type=\"text/javascript\">showmsg(\"{$content}\",\"{$class}\")</script>";
+	ob_flush();
+	flush();
+	sleep(2);
+}
+
+function complete()
+{
+	echo "<script type=\"text/javascript\">complete()</script>";
+}

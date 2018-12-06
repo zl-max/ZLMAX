@@ -1,0 +1,31 @@
+{extend name="public/layout" /}
+{block name="content"}
+<section class="wrap">
+	<div class="step">
+		<ul class="unstyled">
+			<li><em>1</em>检测环境</li>
+			<li><em>2</em>创建数据</li>
+			<li class="current"><em>3</em>完成安装</li>
+		</ul>
+	</div>
+	<div class="install" id='log'>
+		<ul id="loginner" class="unstyled"></ul>		
+	</div>
+	<div class="bottom text-center" >
+		<a style="font-size: 20px"><i class="fa fa-refresh fa-spin"></i>&nbsp;正在安装....</a>
+	</div>	
+</section>
+<script type="text/javascript">
+	function showmsg(content,status){
+		var icon='<i class="fa fa-check correct"></i>';
+		if(status=='error'){
+			var icon='<i class="fa fa-remove error"></i>';
+		}
+		$('#loginner').append("<li>"+icon+content+"</li>");
+	}
+	function complete(){
+		$('a:first').removeClass('fa-refresh').addClass('btn btn-primary').text('安装完成');
+	}
+</script>
+{/block}
+
