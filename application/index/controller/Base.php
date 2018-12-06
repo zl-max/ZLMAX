@@ -12,11 +12,10 @@ namespace app\index\controller;
 //引入模板控制器类
 use think\Controller;
 
-class Base extends Controller{
-	
+class Base extends Controller{	
 	protected function _initialize(){
 		//先安装
-		if(!is_file(ROOT_PATH.'data/install.lock'))
+		if(!is_file(realpath('../application/install/data/install.lock')))
 		{
 			header('Location:'.url('install/Index/index'));
 			exit();

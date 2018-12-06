@@ -16,11 +16,7 @@ class Index extends Controller
 	// 判断是否已经安装过
 	protected function _initialize()
 	{
-		if(is_file(ROOT_PATH.'data/install.lock'))
-		{
-			header('Location:'.url('index'));
-			exit();
-		}
+		
 	}
 
     public function index()
@@ -61,6 +57,7 @@ class Index extends Controller
         }
         // 接收post传来的值进行处理
         if($this->request->isPost()){
+            session('step',4);
             $dbconfig['type']='mysql';
             $dbconfig['hostname']=input('dbhost');
             $dbconfig['username']=input('dbuser');
@@ -94,9 +91,18 @@ class Index extends Controller
 
             echo $this->fetch('step4');
 
-             execute_sql($db,'zlmax.sql',$dbprefix);
+            execute_sql($db,'zlmax.sql',$dbprefix);
 
         }
+    }
+
+    function step5(){
+
+        if(session('step')!==4){
+            $this->redirect($this->request->baseFile());
+        }
+        file_put_contents(APP_PATH.'install/data/install.lock', 'already lock;');
+        return $this->fetch('step5');
     }
 
     // 验证数据库连接是否正确
