@@ -17,9 +17,14 @@
 </section>
 <script type="text/javascript">
 	function showmsg(content,status){
-		var icon='<i class="fa fa-check correct"></i>';
-		if(status=='error'){
+		if(status=='')
+		{
+			var icon='<i class="fa fa-check correct"></i>';
+		}else if(status=='error'){
 			var icon='<i class="fa fa-remove error"></i>';
+		}else if(status=='tips')
+		{
+			var icon='=>';
 		}
 		$('#loginner').append("<li>"+icon+content+"</li>");
 	}

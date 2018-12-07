@@ -41,7 +41,7 @@ class Index extends Controller
 
     function step3(){
         //请按步骤安装
-        if(session('step')!=2 && session('step')!=3)
+        if(session('step')!=2 && session('step')!=3 && session('step')!=4)
         {
             $this->redirect($this->request->baseFile());
         } 
@@ -72,7 +72,7 @@ class Index extends Controller
             }
 
             $dbname=strtolower(input('dbname'));
-            $dbconfig['datatbase']=$dbname;
+            $dbconfig['database']=$dbname;
 
             //先检查数据库是否存在
             $exist_db_sql="CREATE DATABASE if not exists {$dbname} default character set utf8;";
@@ -86,11 +86,11 @@ class Index extends Controller
                 $this->error('数据库连接错误，请检查',url('install/Index/step3'));
             }
             
-            $dbconfig['dbprefix']=strtolower(trim(input('dbprefix')));
+            $dbconfig['prefix']=strtolower(trim(input('dbprefix')));
             $dbprefix=strtolower(trim(input('dbprefix')));
 
             echo $this->fetch('step4');
-
+            write_config($dbconfig);
             execute_sql($db,'zlmax.sql',$dbprefix);
 
         }

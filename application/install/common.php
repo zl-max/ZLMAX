@@ -149,7 +149,7 @@ function execute_sql($db,$filename,$table_pre){
 	$default_pre='zl_';
 
 	$sql_content=str_replace($default_pre,$table_pre,$sql_content);
-	showmsg('开始安装数据库，请等待.....');
+	showmsg('开始安装数据库，请等待......','tips');
 	foreach ($sql_content as $value) {
 		$value=trim($value);
 		if(empty($value)){continue;}
@@ -169,6 +169,25 @@ function execute_sql($db,$filename,$table_pre){
 		}
 	}
 	complete();
+}
+
+/**
+ * 根据配置写一个新的database.php文件
+ * @return [type] [description]
+ */
+function write_config($config){
+	if(is_array($config)){
+		showmsg('正在配置......','tips');
+		$conf=file_get_contents(APP_PATH.'install/data/database.php');
+		foreach ($config as $key => $value) {
+			$conf=str_replace("#{$key}#",$value,$conf);
+		}
+		if(file_put_contents(APP_PATH.'database.php',$conf)){
+			showmsg('database.php文件更新成功');
+		}else{
+			showmsg('database.php文件更新失败');
+		}
+	}
 }
 
 
