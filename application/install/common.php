@@ -17,17 +17,17 @@ function total_env(){
 function check_env(){
 	$items=array(
 		'envir' =>array('环境检测','推荐配置','最低要求','当前状态',''),
-		'os'	=>	array('操作系统','不限制','Unix/WIN',PHP_OS,'check'),
-		'php'	=>  array('php版本','5.5','5.5+',PHP_VERSION,'check'),
-		'upload'=>	array('文件上传','不限制','2M+','未知','check'),
-		'gd'	=>	array('GD库','2.0','2.0+','未知','check'),
-		'disk'	=>  array('磁盘空间','100MB','100MB+','未知','check')
+		'os'	=>	array('操作系统','不限制','Unix/WIN',PHP_OS,'check correct'),
+		'php'	=>  array('php版本','5.5','5.5+',PHP_VERSION,'check correct'),
+		'upload'=>	array('文件上传','不限制','2M+','未知','check correct'),
+		'gd'	=>	array('GD库','2.0','2.0+','未知','check correct'),
+		'disk'	=>  array('磁盘空间','100MB','100MB+','未知','check correct')
  	);
 
 	//php版本不满足
  	if($items['php'][1]>$items['php'][3])
  	{
- 		$items['php'][4]='times text-warning';
+ 		$items['php'][4]='remove error';
  		session('error',true);
  	}
  	//文件上传是否打开
@@ -41,7 +41,7 @@ function check_env(){
  	if(empty($gd['GD Version']))
  	{
  		$items['gd'][3]='未安装';
- 		$items['gd'][4]='times text-warning';
+ 		$items['gd'][4]='remove error';
  		session('error',true);
  	}else{
  		$items['gd'][3]=$gd['GD Version'];
@@ -54,7 +54,7 @@ function check_env(){
  		$disk_free=floor(disk_free_space(ROOT_PATH)/(1024*1024)).'MB';
  		if(rtrim($items['disk'][1],'MB')>rtrim($disk_free,'MB'))
  		{
- 			$items['disk'][4]='times text-warning';
+ 			$items['disk'][4]='remove error';
  			session('error',ture);
  		}
  		$items['disk'][3]=$disk_free;
@@ -66,10 +66,10 @@ function check_env(){
 function check_dirfile(){
 	$files=array(
 		array('文件名称','文件要求','文件类型','当前状态',''),
-		array('application','可读写','dir','可读写','check'),
-		array('public/static','可读写','dir','可读写','check'),
-		array('public/upload','可读写','dir','可读写','check'),
-		array('data/backup','可读写','dir','可读写','check')
+		array('application','可读写','dir','可读写','check correct'),
+		array('public/static','可读写','dir','可读写','check correct'),
+		array('public/upload','可读写','dir','可读写','check correct'),
+		array('data/backup','可读写','dir','可读写','check correct')
 	);
 
 	foreach ($files as  &$value) {
@@ -84,19 +84,19 @@ function check_dirfile(){
 				}else{
 					$value[3]='不存在';
 				}
-				$value[4]='times text-warning';
+				$value[4]='remove error';
 				session('error',true);
 			}
 		}elseif($value[2]=='file'){
 			if(file_exists($dir)){
 				if(!is_writable($dir)){
 					$value[3]='不可写';
-					$value[4]='times text-warning';
+					$value[4]='remove error';
 					session('error',true);
 				}
 			}else{
 					$value[3]='不存在';
-					$value[4]='times text-warning';
+					$value[4]='remove error';
 					session('error',true);
 			}
 		}
@@ -107,12 +107,12 @@ function check_dirfile(){
 function check_func(){
 	$funcs=array(
 		array('函数名称','函数要求','函数类型','当前状态',''),
-		array('PDO','开启','类','开启','check'),
-		array('pdo_mysql','开启','模块','开启','check'),
-		array('fileinfo','开启','模块','开启','check'),
-		array('mb_strlen','开启','函数','开启','check'),
-		array('file_get_contents','开启','函数','开启','check'),
-		array('session','开启','其他','开启','check')
+		array('PDO','开启','类','开启','check correct'),
+		array('pdo_mysql','开启','模块','开启','check correct'),
+		array('fileinfo','开启','模块','开启','check correct'),
+		array('mb_strlen','开启','函数','开启','check correct'),
+		array('file_get_contents','开启','函数','开启','check correct'),
+		array('session','开启','其他','开启','check correct')
 	);
 
 	foreach ($funcs as &$value) {
@@ -122,7 +122,7 @@ function check_func(){
 		($value[0]=='session'&& !session_status()))
 		{
 			$value[3]='未开启';
-			$value[4]='times text-warning';
+			$value[4]='remove error';
 			session('error',true);
 		}
 
