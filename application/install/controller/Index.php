@@ -62,7 +62,10 @@ class Index extends Controller
             $dbconfig['hostname']=input('dbhost');
             $dbconfig['username']=input('dbuser');
             $dbconfig['password']=input('dbpwd');
-            $dbconfig['hostport']=input('dbport');           
+            $dbconfig['hostport']=input('dbport');   
+            $dbconfig['manager']=input('manager'); 
+            $dbconfig['manager_pwd']=input('manager_pwd'); 
+            $dbconfig['manager_email']=input('manager_email');       
             // 连接数据库
             $dsn="{$dbconfig['type']}:host={$dbconfig['hostname']};port={$dbconfig['hostport']};charset=utf8";
             try{
@@ -92,7 +95,7 @@ class Index extends Controller
             echo $this->fetch('step4');
             write_config($dbconfig);
             execute_sql($db,'zlmax.sql',$dbprefix);
-
+            create_admin($dbconfig);
         }
     }
 

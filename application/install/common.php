@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 //环境检测合并
+use app\admin\model\UserModel;
 function total_env(){
 	return array_merge(check_env(),check_dirfile(),check_func());
 }
@@ -168,7 +169,6 @@ function execute_sql($db,$filename,$table_pre){
 			$db->exec($value);
 		}
 	}
-	complete();
 }
 
 /**
@@ -188,6 +188,27 @@ function write_config($config){
 			showmsg('database.php文件更新失败');
 		}
 	}
+}
+
+/**
+ * 创建管理员
+ * @param  [array]管理员数组
+ * @return [bool]
+ */
+function create_admin($admin){
+	showmsg("管理员{$admin['manager']}正在创建......",'tips');
+	$msg=false;
+	if(is_array($admin) && !empty($admin)){		
+		$user=new UserModel();
+		$msg=$user->saveAdmin($admin);
+	}
+	if(true==$msg)
+	{
+		showmsg("管理员{$admin['manager']}创建成功");
+	}else{
+		showmsg("管理员{$admin['manager']}创建失败",'error');
+	}
+	complete();
 }
 
 

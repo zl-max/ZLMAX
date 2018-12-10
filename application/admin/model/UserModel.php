@@ -9,10 +9,16 @@
 // | Author: Z.L <582152734@qq.com>
 // +----------------------------------------------------------------------
 namespace app\admin\model;
+use think\Model;
+use think\Db;
 
-class User extends Model{
+class UserModel extends Model{
 
-	function saveuser($loginname,$username,$password,$mail){
-		return $this->
+	public function saveAdmin($arr=''){
+		if(!empty($arr)){
+			Db::query("insert into ".$arr['prefix']."user(username,userpwd,useremail) select '".$arr['manager']."','".md5($arr['manager_pwd'])."','".$arr['manager_email']."'");
+			return true;
+		}
+		return false;
 	}
 }
