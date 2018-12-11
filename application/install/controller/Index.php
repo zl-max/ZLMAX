@@ -101,7 +101,12 @@ class Index extends Controller
         if(session('step')!==4){
             $this->redirect($this->request->baseFile());
         }
-        file_put_contents(APP_PATH.'install/data/install.lock', 'already lock;');
+$msg=<<<EO
+alreay inclock:
+The sys is completed,if you want to repeat the sys. please delete the 
+file,but the database is important,plwase backup; 
+EO;
+        file_put_contents(APP_PATH.'install/data/install.lock', $msg);
         return $this->fetch('step5');
     }
 
