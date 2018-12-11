@@ -12,19 +12,24 @@
 		<ul id="loginner" class="unstyled"></ul>		
 	</div>
 	<div class="bottom  text-center" >
-		<a style="font-size: 20px" href="{:url('install/index/step5')}"><i class="fa fa-refresh fa-spin"></i>&nbsp;正在安装....</a>
+		<a style="font-size: 20px"><i class="fa fa-refresh fa-spin"></i>&nbsp;正在安装....</a>
 	</div>	
 </section>
 <script type="text/javascript">
 	function showmsg(content,status){
-		var icon='<i class="fa fa-check correct"></i>';
-		if(status=='error'){
+		if(status=='')
+		{
+			var icon='<i class="fa fa-check correct"></i>';
+		}else if(status=='error'){
 			var icon='<i class="fa fa-remove error"></i>';
+		}else if(status=='tips')
+		{
+			var icon='>>>';
 		}
 		$('#loginner').append("<li>"+icon+content+"</li>");
 	}
 	function complete(){
-		$('a:first').removeClass('fa-refresh').addClass('btn btn-primary').text('安装完成');
+		$('a:first').removeClass('fa-refresh').addClass('btn btn-primary').attr("href","{:url('install/index/step5')}").text('安装完成');
 	}
 </script>
 {/block}

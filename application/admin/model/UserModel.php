@@ -1,4 +1,4 @@
-<?php		
+<?php
 // +----------------------------------------------------------------------
 // | ZL [ WE CAN DO IT！！！]
 // +----------------------------------------------------------------------
@@ -8,13 +8,17 @@
 // +----------------------------------------------------------------------
 // | Author: Z.L <582152734@qq.com>
 // +----------------------------------------------------------------------
-namespace app\index\controller;
-use app\index\controller\Base;
+namespace app\admin\model;
+use think\Model;
+use think\Db;
 
-class Index extends Base
-{
-    public function index()
-    {
-    	return "<style tyepe='text/html'> h1{text-align:center} body{background:#BDB76B;margin:0} div{padding-top:10%}</style><div><h1>哈哈，来前台了</h1></div>";
-    }
+class UserModel extends Model{
+
+	public function saveAdmin($arr=''){
+		if(!empty($arr)){
+			Db::query("insert into ".$arr['prefix']."user(username,userpwd,useremail) select '".$arr['manager']."','".md5($arr['manager_pwd'])."','".$arr['manager_email']."'");
+			return true;
+		}
+		return false;
+	}
 }

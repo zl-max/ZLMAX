@@ -604,6 +604,11 @@ class App
         Hook::listen('action_begin', $call);
 
         return self::invokeMethod($call, $vars);
+
+        // 由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5.0和5.1版本，推荐尽快更新到最新版本。
+        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
+            throw new HttpException(404, 'controller not exists:' . $controller);
+        }
     }
 
     /**
