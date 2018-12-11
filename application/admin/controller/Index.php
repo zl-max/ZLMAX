@@ -1,18 +1,12 @@
 <?php
 namespace app\admin\controller;
-use think\Controller;
-use app\admin\model\UserModel;
+use app\index\controller\Base;
 
-class Index extends Controller
+class Index extends Base
 {
     public function index()
     {
-    	$arr=array('prefix'=>'zl_',
-    		'username'=>'zhangsan'
-    	);
-    	$user=new UserModel();
-    	$msg=$user->saveAdmin($arr);
-        return $msg;
+    	return $this->fetch();
     }
 
     function login(){
