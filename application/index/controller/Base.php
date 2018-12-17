@@ -13,16 +13,12 @@ namespace app\index\controller;
 use think\Controller;
 
 class Base extends Controller{	
-	protected static $path;
-
 	protected function _initialize(){
 		//先安装
-		$path=dirname(dirname(__FILE__));
 		if(!is_file(APP_PATH.'install/data/install.lock'))
 		{
 			header('Location:'.url('install/Index/index'));
 			exit();
 		}
 	}
-	
 }
