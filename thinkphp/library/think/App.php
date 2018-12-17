@@ -76,11 +76,12 @@ class App
      */
     public static function run(Request $request = null)
     {
+        //Request::instace()对Request初始化
         $request = is_null($request) ? Request::instance() : $request;
 
         try {
-            $config = self::initCommon();
-
+            $config = self::initCommon();  //获取
+            // var_dump($config);
             // 模块/控制器绑定
             if (defined('BIND_MODULE')) {
                 BIND_MODULE && Route::bind(BIND_MODULE);
@@ -137,6 +138,8 @@ class App
             );
 
             $data = self::exec($dispatch, $config);
+
+            // var_dump($data);            
         } catch (HttpResponseException $exception) {
             $data = $exception->getResponse();
         }
@@ -176,13 +179,14 @@ class App
                 self::$namespace = APP_NAMESPACE;
             }
 
-            Loader::addNamespace(self::$namespace, APP_PATH);
+            Loader::addNamespace(self::$namespace, APP_PATH);  //加载APP的路径
 
             // 初始化应用
-            $config       = self::init();
+            $config       = self::init();  
+            // var_dump($config);
             self::$suffix = $config['class_suffix'];
 
-            // 应用调试模式
+            // 应用调试模式 环境变量优先级大于配置文件
             self::$debug = Env::get('app_debug', Config::get('app_debug'));
 
             if (!self::$debug) {
@@ -205,7 +209,8 @@ class App
                 Loader::addNamespace($config['root_namespace']);
             }
 
-            // 加载额外文件
+            // 加载额外文件  加载助手函数
+            // var_dump($config['extra_file_list']);
             if (!empty($config['extra_file_list'])) {
                 foreach ($config['extra_file_list'] as $file) {
                     $file = strpos($file, '.') ? $file : APP_PATH . $file . EXT;
@@ -247,7 +252,7 @@ class App
         } else {
             // 加载模块配置
             $config = Config::load(CONF_PATH . $module . 'config' . CONF_EXT);
-
+            //var_dump($config);
             // 读取数据库配置文件
             $filename = CONF_PATH . $module . 'database' . CONF_EXT;
             Config::load($filename, 'database');
@@ -255,10 +260,13 @@ class App
             // 读取扩展配置文件
             if (is_dir(CONF_PATH . $module . 'extra')) {
                 $dir   = CONF_PATH . $module . 'extra';
+                // echo $dir;
                 $files = scandir($dir);
+                // var_dump($files);
                 foreach ($files as $file) {
                     if ('.' . pathinfo($file, PATHINFO_EXTENSION) === CONF_EXT) {
                         $filename = $dir . DS . $file;
+                        // echo $filename;
                         Config::load($filename, pathinfo($file, PATHINFO_FILENAME));
                     }
                 }

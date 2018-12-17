@@ -21,9 +21,8 @@ class Env
      * @return mixed
      */
     public static function get($name, $default = null)
-    {
+    {    
         $result = getenv(ENV_PREFIX . strtoupper(str_replace('.', '_', $name)));
-
         if (false !== $result) {
             if ('false' === $result) {
                 $result = false;

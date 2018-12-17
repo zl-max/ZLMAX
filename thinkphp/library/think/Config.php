@@ -160,8 +160,8 @@ class Config
     public static function set($name, $value = null, $range = '')
     {
         $range = $range ?: self::$range;
-
-        if (!isset(self::$config[$range])) self::$config[$range] = [];
+        // 没有设置$config['_sys_']则全部为空
+        if (!isset(self::$config[$range])) self::$config[$range] = [];  
 
         // 字符串则表示单个配置设置
         if (is_string($name)) {

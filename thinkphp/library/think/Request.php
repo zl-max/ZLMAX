@@ -145,6 +145,7 @@ class Request
 
         // 保存 php://input
         $this->input = file_get_contents('php://input');
+        
     }
 
     public function __call($method, $args)

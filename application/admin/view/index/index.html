@@ -29,13 +29,13 @@
 				<tr>
 					<td class="txt">验证码：</td>
 					<td class="input">
-						<input type="text" name="valicate" class="validate"><img src="" class="yz">
+						<input type="text" name="valicate" class="validate"><img src="{:captcha_src()}" class="yz" alt="captcha" onclick='this.src="{:captcha_src()}?rand="+Math.random()'>
 					</td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
-						<input type="submit" name="submit" value="登录" id="submit">
+						<input type="submit" name="submit" value="登录后台" id="submit">
 					</td>
 				</tr>
 			</table>

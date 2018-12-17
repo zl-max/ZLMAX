@@ -240,4 +240,12 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    'captcha'=>[
+        'length'=>4,
+        // 验证码长度
+        'fontSize' => 40,
+        // 验证码字体大小(px)
+        'useCurve' => false
+        // 是否画混淆曲线
+    ],
 ];
