@@ -19,6 +19,6 @@ class Index extends Base
     			return '验证码错误！';
     		}
     	}
-    	return '没成功啊！';
+    	return 'Request Need:POST';
     }
 }
