@@ -30,7 +30,8 @@ class Hook
     {
         isset(self::$tags[$tag]) || self::$tags[$tag] = [];
 
-        if (is_array($behavior) && !is_callable($behavior)) {
+        // var_dump(is_callable($behavior));
+        if (is_array($behavior) && !is_callable($behavior)) {  //is_callable()是否可调用的函数或方法
             if (!array_key_exists('_overlay', $behavior) || !$behavior['_overlay']) {
                 unset($behavior['_overlay']);
                 self::$tags[$tag] = array_merge(self::$tags[$tag], $behavior);
@@ -41,8 +42,9 @@ class Hook
         } elseif ($first) {
             array_unshift(self::$tags[$tag], $behavior);
         } else {
-            self::$tags[$tag][] = $behavior;
+            self::$tags[$tag][] = $behavior;  
         }
+        // var_dump(self::$tags);
     }
 
     /**
@@ -54,6 +56,8 @@ class Hook
      */
     public static function import(array $tags, $recursive = true)
     {
+        //加载tags.php
+        // var_dump($tags);
         if ($recursive) {
             foreach ($tags as $tag => $behavior) {
                 self::add($tag, $behavior);

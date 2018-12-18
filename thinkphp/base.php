@@ -61,5 +61,7 @@ if (is_file(ROOT_PATH . '.env')) {
 // 注册错误和异常处理机制
 \think\Error::register();
 
+// var_dump(include THINK_PATH . 'convention' . EXT);
 // 加载惯例配置文件
 \think\Config::set(include THINK_PATH . 'convention' . EXT);
+//$config[_sys_]增加convention中的配置

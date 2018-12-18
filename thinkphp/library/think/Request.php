@@ -134,8 +134,10 @@ class Request
      */
     protected function __construct($options = [])
     {
+        // var_dump($options);
+        // var_dump($this);
         foreach ($options as $name => $item) {
-            if (property_exists($this, $name)) {
+            if (property_exists($this, $name)) {   //
                 $this->$name = $item;
             }
         }

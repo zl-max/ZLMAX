@@ -125,10 +125,11 @@ class Config
         if (empty($name) && isset(self::$config[$range])) {
             return self::$config[$range];
         }
-
+        // var_dump(strpos('default_filter', '.'));
         // 非二级配置时直接返回
         if (!strpos($name, '.')) {
             $name = strtolower($name);
+            // var_dump(self::$config[$range]['default_filter']);
             return isset(self::$config[$range][$name]) ? self::$config[$range][$name] : null;
         }
 
@@ -159,10 +160,14 @@ class Config
      */
     public static function set($name, $value = null, $range = '')
     {
+        // var_dump($value);
+        // echo $name;
         $range = $range ?: self::$range;
+        // echo $range;
         // 没有设置$config['_sys_']则全部为空
         if (!isset(self::$config[$range])) self::$config[$range] = [];  
 
+        // var_dump($range);
         // 字符串则表示单个配置设置
         if (is_string($name)) {
             if (!strpos($name, '.')) {
@@ -185,7 +190,7 @@ class Config
 
                 return self::$config[$range][$value];
             }
-
+            // var_dump(self::$config);
             return self::$config[$range] = array_merge(
                 self::$config[$range], array_change_key_case($name)
             );

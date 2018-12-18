@@ -68,6 +68,8 @@ class Loader
      */
     public static function autoload($class)
     {
+        // echo $class.'<br>';
+        // var_dump(self::$namespaceAlias);
         // 检测命名空间别名
         if (!empty(self::$namespaceAlias)) {
             $namespace = dirname($class);
@@ -78,7 +80,7 @@ class Loader
                 }
             }
         }
-
+        // var_dump(self::findFile($class));
         if ($file = self::findFile($class)) {
             // 非 Win 环境不严格区分大小写
             if (!IS_WIN || pathinfo($file, PATHINFO_FILENAME) == pathinfo(realpath($file), PATHINFO_FILENAME)) {
@@ -105,8 +107,9 @@ class Loader
 
         // 查找 PSR-4
         $logicalPathPsr4 = strtr($class, '\\', DS) . EXT;
+        // echo $logicalPathPsr4.'<br>';
         $first           = $class[0];
-
+        // var_dump(self::$prefixLengthsPsr4[$first]);
         if (isset(self::$prefixLengthsPsr4[$first])) {
             foreach (self::$prefixLengthsPsr4[$first] as $prefix => $length) {
                 if (0 === strpos($class, $prefix)) {

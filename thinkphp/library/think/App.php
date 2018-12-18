@@ -95,6 +95,7 @@ class App
 
             $request->filter($config['default_filter']);
 
+
             // 默认语言
             Lang::range($config['default_lang']);
             // 开启多语言机制 检测当前语言
@@ -106,6 +107,7 @@ class App
                 THINK_PATH . 'lang' . DS . $request->langset() . EXT,
                 APP_PATH . 'lang' . DS . $request->langset() . EXT,
             ]);
+
 
             // 监听 app_dispatch
             Hook::listen('app_dispatch', self::$dispatch);
@@ -267,6 +269,8 @@ class App
                     if ('.' . pathinfo($file, PATHINFO_EXTENSION) === CONF_EXT) {
                         $filename = $dir . DS . $file;
                         // echo $filename;
+                        // echo pathinfo($file, PATHINFO_FILENAME);
+                        // queue.php文件
                         Config::load($filename, pathinfo($file, PATHINFO_FILENAME));
                     }
                 }
