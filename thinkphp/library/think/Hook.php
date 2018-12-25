@@ -95,9 +95,10 @@ class Hook
     {
         $results = [];
 
+        // echo $tag.'<br>';
+        // var_dump(static::get($tag));
         foreach (static::get($tag) as $key => $name) {
             $results[$key] = self::exec($name, $tag, $params, $extra);
-
             // 如果返回 false，或者仅获取一个有效返回则中断行为执行
             if (false === $results[$key] || (!is_null($results[$key]) && $once)) {
                 break;
@@ -118,6 +119,7 @@ class Hook
      */
     public static function exec($class, $tag = '', &$params = null, $extra = null)
     {
+        // var_dump($class);
         App::$debug && Debug::remark('behavior_start', 'time');
 
         $method = Loader::parseName($tag, 1, false);

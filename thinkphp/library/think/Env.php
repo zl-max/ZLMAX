@@ -23,6 +23,7 @@ class Env
     public static function get($name, $default = null)
     {    
         $result = getenv(ENV_PREFIX . strtoupper(str_replace('.', '_', $name)));
+        // var_dump($result);
         if (false !== $result) {
             if ('false' === $result) {
                 $result = false;

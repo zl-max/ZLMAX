@@ -621,11 +621,12 @@ class Loader
      */
     public static function parseName($name, $type = 0, $ucfirst = true)
     {
+        // echo $name;
         if ($type) {
             $name = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
                 return strtoupper($match[1]);
             }, $name);
-
+            
             return $ucfirst ? ucfirst($name) : lcfirst($name);
         }
 
