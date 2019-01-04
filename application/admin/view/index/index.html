@@ -4,10 +4,85 @@
 	<meta charset="UTF-8">
 	<title>我是后台</title>
 	<link rel="stylesheet" type="text/css" href="/admin/css/login.css">
+	<script type="text/javascript">
+		// 封装一个ajax函数
+		function ajax(options){
+			options=options||{};  // 参数是否为空
+			options.type=(options.type||"get").toUpperCase();  // 请求方式
+			options.dataType=options.dataType||"json";
+			// GET请求后面所跟的参数
+			var params=createParams(options.data);
+
+			//document.write(options.type);
+			// document.write(params);
+			// return;
+			//创建连接对象
+			//IE6以上
+			if(window.XMLHttpRequest){
+				var xhr = new XMLHttpRequest();
+			}
+			else  // ie6以下版本
+			{
+				var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+
+			
+			// 接收
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200 ||xhr.status==304)
+				{
+					var su=JSON.parse(xhr.responseText);
+					options.success && options.success(su,xhr.responseXML);
+				}
+			}
+
+			//连接和发送请求
+			if(options.type=="GET"){
+				xhr.open("GET",options.url+"?"+params,true);
+				xhr.send(null);
+			}else{
+				xhr.open("POST",options.url,true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhr.send(params);
+			}
+		}
+
+
+		// 封装GET请求后面跟的参数
+		function createParams(par){
+			var arr=[];
+			for(var name in par){
+				arr.push(name+"="+par[name]);
+			}
+			return arr.join("&");
+		}
+		
+		function login(){
+			var valicate=document.getElementById('validate_code');
+			ajax({
+					url:"{:url('admin/index/login')}",
+					type:"post",
+					data:{valicate:valicate.value},
+					dataType:"json",
+					success:function(response,xml){
+						//alert(response.msg);
+						if(response.code==1){
+							valicate.value="";
+						}
+						alert(response.msg);
+						document.getElementById('vali').onclick();
+					},
+					fail : function(status){
+						alert(status);
+					}
+			});
+		}
+
+	</script>
 </head>
 <body>
 	<div id="login">
-		<form action="{:url('admin/index/login')}" method="POST">
+		<form>
 			<table>
 				<tr>
 					<td id="logo"><img src="/admin/images/logo.png"></td>
@@ -29,13 +104,13 @@
 				<tr>
 					<td class="txt">验证码：</td>
 					<td class="input">
-						<input type="text" name="valicate" class="validate"><img src="{:captcha_src()}" class="yz" alt="captcha" onclick='this.src="{:captcha_src()}?rand="+Math.random()'>
+						<input type="text" name="valicate" class="validate" id="validate_code" minlength="4" maxlength="4"><img src="{:captcha_src()}" class="yz" alt="captcha" onclick='this.src="{:captcha_src()}?rand="+Math.random()' id="vali">
 					</td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
-						<input type="submit" name="submit" value="登录后台" id="submit">
+						<input type="button" id="submit" value="登录后台" onclick="login()">
 					</td>
 				</tr>
 			</table>

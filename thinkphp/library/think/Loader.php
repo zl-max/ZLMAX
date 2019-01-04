@@ -68,8 +68,6 @@ class Loader
      */
     public static function autoload($class)
     {
-        // echo $class.'<br>';
-        // var_dump(self::$namespaceAlias);
         // 检测命名空间别名
         if (!empty(self::$namespaceAlias)) {
             $namespace = dirname($class);
@@ -80,7 +78,7 @@ class Loader
                 }
             }
         }
-        // var_dump(self::findFile($class));
+
         if ($file = self::findFile($class)) {
             // 非 Win 环境不严格区分大小写
             if (!IS_WIN || pathinfo($file, PATHINFO_FILENAME) == pathinfo(realpath($file), PATHINFO_FILENAME)) {
@@ -106,10 +104,9 @@ class Loader
         }
 
         // 查找 PSR-4
-        $logicalPathPsr4 = strtr($class, '\\', DS) . EXT;
-        // echo $logicalPathPsr4.'<br>';
+        $logicalPathPsr4 = strtr($class, '\\', DS) . EXT;  //strtr将$class中的\\替换成\+.php
         $first           = $class[0];
-        // var_dump(self::$prefixLengthsPsr4[$first]);
+
         if (isset(self::$prefixLengthsPsr4[$first])) {
             foreach (self::$prefixLengthsPsr4[$first] as $prefix => $length) {
                 if (0 === strpos($class, $prefix)) {
@@ -206,7 +203,6 @@ class Loader
      */
     private static function addPsr0($prefix, $paths, $prepend = false)
     {
-        //echo $prefix;
         if (!$prefix) {
             self::$fallbackDirsPsr0 = $prepend ?
             array_merge((array) $paths, self::$fallbackDirsPsr0) :
@@ -234,7 +230,6 @@ class Loader
      */
     private static function addPsr4($prefix, $paths, $prepend = false)
     {
-        //echo $prefix; 
         if (!$prefix) {
             // Register directories for the root namespace.
             self::$fallbackDirsPsr4 = $prepend ?
@@ -243,7 +238,6 @@ class Loader
 
         } elseif (!isset(self::$prefixDirsPsr4[$prefix])) {
             // Register directories for a new namespace.
-            //echo self::$prefixDirsPsr4[$prefix];
             $length = strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
                 throw new \InvalidArgumentException(
@@ -251,11 +245,8 @@ class Loader
                 );
             }
 
-            self::$prefixLengthsPsr4[$prefix[0]][$prefix] = $length;  //数组存储文件头字母和空间前缀$prefixLengthsPsr4[t][think\work\]
+            self::$prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
             self::$prefixDirsPsr4[$prefix]                = (array) $paths;
-
-            //var_dump(self::$prefixLengthsPsr4);
-            //var_dump(self::$prefixDirsPsr4);
 
         } else {
             self::$prefixDirsPsr4[$prefix] = $prepend ?
@@ -323,7 +314,7 @@ class Loader
             self::addClassMap(__include_file(RUNTIME_PATH . 'classmap' . EXT));
         }
 
-        self::loadComposerAutoloadFiles();  //加载composer中的files中的目录文件
+        self::loadComposerAutoloadFiles();
 
         // 自动加载 extend 目录
         self::$fallbackDirsPsr4[] = rtrim(EXTEND_PATH, DS);
@@ -338,17 +329,15 @@ class Loader
     {
         if (is_file(VENDOR_PATH . 'composer/autoload_namespaces.php')) {
             $map = require VENDOR_PATH . 'composer/autoload_namespaces.php';
-            //var_dump($map);
             foreach ($map as $namespace => $path) {
                 self::addPsr0($namespace, $path);
             }
         }
 
         if (is_file(VENDOR_PATH . 'composer/autoload_psr4.php')) {
-            $map = require VENDOR_PATH . 'composer/autoload_psr4.php';  //composer中需要加载的文件
-            //var_dump($map);
+            $map = require VENDOR_PATH . 'composer/autoload_psr4.php';
             foreach ($map as $namespace => $path) {
-                self::addPsr4($namespace, $path);   // 将空间前缀和路径加载到数组
+                self::addPsr4($namespace, $path);
             }
         }
 

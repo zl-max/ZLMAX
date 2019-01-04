@@ -76,12 +76,11 @@ class App
      */
     public static function run(Request $request = null)
     {
-        //Request::instace()对Request初始化
-        $request = is_null($request) ? Request::instance() : $request;
+        $request = is_null($request) ? Request::instance() : $request;  //初始化Request
 
         try {
-            $config = self::initCommon();  //获取
-            // var_dump($config);
+            $config = self::initCommon();
+
             // 模块/控制器绑定
             if (defined('BIND_MODULE')) {
                 BIND_MODULE && Route::bind(BIND_MODULE);
@@ -95,7 +94,6 @@ class App
 
             $request->filter($config['default_filter']);
 
-
             // 默认语言
             Lang::range($config['default_lang']);
             // 开启多语言机制 检测当前语言
@@ -107,7 +105,6 @@ class App
                 THINK_PATH . 'lang' . DS . $request->langset() . EXT,
                 APP_PATH . 'lang' . DS . $request->langset() . EXT,
             ]);
-
 
             // 监听 app_dispatch
             Hook::listen('app_dispatch', self::$dispatch);
@@ -140,8 +137,6 @@ class App
             );
 
             $data = self::exec($dispatch, $config);
-
-            // var_dump($data);            
         } catch (HttpResponseException $exception) {
             $data = $exception->getResponse();
         }
@@ -180,15 +175,14 @@ class App
             if (defined('APP_NAMESPACE')) {
                 self::$namespace = APP_NAMESPACE;
             }
-
-            Loader::addNamespace(self::$namespace, APP_PATH);  //加载APP的路径
+            //设置APP对应APP_PATH路径
+            Loader::addNamespace(self::$namespace, APP_PATH);  
 
             // 初始化应用
-            $config       = self::init();  
-            // var_dump($config);
+            $config       = self::init();
             self::$suffix = $config['class_suffix'];
 
-            // 应用调试模式 环境变量优先级大于配置文件
+            // 应用调试模式
             self::$debug = Env::get('app_debug', Config::get('app_debug'));
 
             if (!self::$debug) {
@@ -211,8 +205,7 @@ class App
                 Loader::addNamespace($config['root_namespace']);
             }
 
-            // 加载额外文件  加载助手函数
-            // var_dump($config['extra_file_list']);
+            // 加载额外文件
             if (!empty($config['extra_file_list'])) {
                 foreach ($config['extra_file_list'] as $file) {
                     $file = strpos($file, '.') ? $file : APP_PATH . $file . EXT;
@@ -254,7 +247,7 @@ class App
         } else {
             // 加载模块配置
             $config = Config::load(CONF_PATH . $module . 'config' . CONF_EXT);
-            //var_dump($config);
+
             // 读取数据库配置文件
             $filename = CONF_PATH . $module . 'database' . CONF_EXT;
             Config::load($filename, 'database');
@@ -262,15 +255,10 @@ class App
             // 读取扩展配置文件
             if (is_dir(CONF_PATH . $module . 'extra')) {
                 $dir   = CONF_PATH . $module . 'extra';
-                // echo $dir;
                 $files = scandir($dir);
-                // var_dump($files);
                 foreach ($files as $file) {
                     if ('.' . pathinfo($file, PATHINFO_EXTENSION) === CONF_EXT) {
                         $filename = $dir . DS . $file;
-                        // echo $filename;
-                        // echo pathinfo($file, PATHINFO_FILENAME);
-                        // queue.php文件
                         Config::load($filename, pathinfo($file, PATHINFO_FILENAME));
                     }
                 }
@@ -616,11 +604,6 @@ class App
         Hook::listen('action_begin', $call);
 
         return self::invokeMethod($call, $vars);
-
-        // 由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5.0和5.1版本，推荐尽快更新到最新版本。
-        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
-            throw new HttpException(404, 'controller not exists:' . $controller);
-        }
     }
 
     /**

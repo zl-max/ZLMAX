@@ -70,7 +70,6 @@ class Response
     public static function create($data = '', $type = '', $code = 200, array $header = [], $options = [])
     {
         $class = false !== strpos($type, '\\') ? $type : '\\think\\response\\' . ucfirst(strtolower($type));
-        // echo $class;
         if (class_exists($class)) {
             $response = new $class($data, $code, $header, $options);
         } else {
@@ -99,10 +98,8 @@ class Response
             Debug::inject($this, $data);
         }
 
-        // echo $this->code;
         if (200 == $this->code) {
             $cache = Request::instance()->getCache();
-            // var_dump($cache);
             if ($cache) {
                 $this->header['Cache-Control'] = 'max-age=' . $cache[1] . ',must-revalidate';
                 $this->header['Last-Modified'] = gmdate('D, d M Y H:i:s') . ' GMT';
@@ -110,9 +107,6 @@ class Response
                 Cache::tag($cache[2])->set($cache[0], [$data, $this->header], $cache[1]);
             }
         }
-        // var_dump(headers_sent()).'<br>';
-        // var_dump($this->header);
-
 
         if (!headers_sent() && !empty($this->header)) {
             // 发送状态码

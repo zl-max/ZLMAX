@@ -13,12 +13,6 @@ use think\Controller;
 
 class Index extends Controller
 {
-	// 判断是否已经安装过
-	protected function _initialize()
-	{
-		
-	}
-
     public function index()
     {
     	session('step',1);
@@ -38,6 +32,7 @@ class Index extends Controller
         $this->assign('env',$env);
         return $this->fetch('step2');
     }
+
 
     function step3(){
         //请按步骤安装
