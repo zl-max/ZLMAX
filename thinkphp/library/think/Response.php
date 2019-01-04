@@ -70,16 +70,12 @@ class Response
     public static function create($data = '', $type = '', $code = 200, array $header = [], $options = [])
     {
         $class = false !== strpos($type, '\\') ? $type : '\\think\\response\\' . ucfirst(strtolower($type));
-        // echo $class;
-        // var_dump(class_exists($class));
         if (class_exists($class)) {
             $response = new $class($data, $code, $header, $options);
         } else {
             $response = new static($data, $code, $header, $options);
-
-            // var_dump($response);
         }
-        // var_dump($response);
+
         return $response;
     }
 
@@ -102,10 +98,8 @@ class Response
             Debug::inject($this, $data);
         }
 
-        // echo $this->code;
         if (200 == $this->code) {
             $cache = Request::instance()->getCache();
-            // var_dump($cache);
             if ($cache) {
                 $this->header['Cache-Control'] = 'max-age=' . $cache[1] . ',must-revalidate';
                 $this->header['Last-Modified'] = gmdate('D, d M Y H:i:s') . ' GMT';
@@ -113,15 +107,11 @@ class Response
                 Cache::tag($cache[2])->set($cache[0], [$data, $this->header], $cache[1]);
             }
         }
-        // var_dump(headers_sent()).'<br>';
-        // var_dump($this->header);      
-        
+
         if (!headers_sent() && !empty($this->header)) {
             // 发送状态码
             http_response_code($this->code);
             // 发送头部信息
-            // var_dump($this->header);
-
             foreach ($this->header as $name => $val) {
                 if (is_null($val)) {
                     header($name);
@@ -131,10 +121,8 @@ class Response
             }
         }
 
-        // echo $data;
+        echo $data;
 
-        // var_dump(function_exists('fastcgi_finish_request'));
-        
         if (function_exists('fastcgi_finish_request')) {
             // 提高页面响应
             fastcgi_finish_request();
@@ -317,7 +305,6 @@ class Response
      */
     public function getContent()
     {
-        // var_dump($this->content);
         if (null == $this->content) {
             $content = $this->output($this->data);
 

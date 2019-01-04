@@ -134,10 +134,8 @@ class Request
      */
     protected function __construct($options = [])
     {
-        // var_dump($options);
-        // var_dump($this);
         foreach ($options as $name => $item) {
-            if (property_exists($this, $name)) {   //
+            if (property_exists($this, $name)) {
                 $this->$name = $item;
             }
         }
@@ -147,7 +145,6 @@ class Request
 
         // 保存 php://input
         $this->input = file_get_contents('php://input');
-        
     }
 
     public function __call($method, $args)

@@ -30,8 +30,7 @@ class Hook
     {
         isset(self::$tags[$tag]) || self::$tags[$tag] = [];
 
-        // var_dump(is_callable($behavior));
-        if (is_array($behavior) && !is_callable($behavior)) {  //is_callable()是否可调用的函数或方法
+        if (is_array($behavior) && !is_callable($behavior)) {
             if (!array_key_exists('_overlay', $behavior) || !$behavior['_overlay']) {
                 unset($behavior['_overlay']);
                 self::$tags[$tag] = array_merge(self::$tags[$tag], $behavior);
@@ -42,9 +41,8 @@ class Hook
         } elseif ($first) {
             array_unshift(self::$tags[$tag], $behavior);
         } else {
-            self::$tags[$tag][] = $behavior;  
+            self::$tags[$tag][] = $behavior;
         }
-        // var_dump(self::$tags);
     }
 
     /**
@@ -56,8 +54,6 @@ class Hook
      */
     public static function import(array $tags, $recursive = true)
     {
-        //加载tags.php
-        // var_dump($tags);
         if ($recursive) {
             foreach ($tags as $tag => $behavior) {
                 self::add($tag, $behavior);
@@ -95,10 +91,9 @@ class Hook
     {
         $results = [];
 
-        // echo $tag.'<br>';
-        // var_dump(static::get($tag));
         foreach (static::get($tag) as $key => $name) {
             $results[$key] = self::exec($name, $tag, $params, $extra);
+
             // 如果返回 false，或者仅获取一个有效返回则中断行为执行
             if (false === $results[$key] || (!is_null($results[$key]) && $once)) {
                 break;
@@ -119,7 +114,6 @@ class Hook
      */
     public static function exec($class, $tag = '', &$params = null, $extra = null)
     {
-        // var_dump($class);
         App::$debug && Debug::remark('behavior_start', 'time');
 
         $method = Loader::parseName($tag, 1, false);

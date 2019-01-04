@@ -19,7 +19,7 @@ define('LIB_PATH', THINK_PATH . 'library' . DS);
 define('CORE_PATH', LIB_PATH . 'think' . DS);
 define('TRAIT_PATH', LIB_PATH . 'traits' . DS);
 defined('APP_PATH') or define('APP_PATH', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
-defined('ROOT_PATH') or define('ROOT_PATH', dirname(realpath(APP_PATH)) . DS);
+defined('ROOT_PATH') or define('ROOT_PATH', dirname(realpath(APP_PATH)) . DS);  // /根目录
 defined('EXTEND_PATH') or define('EXTEND_PATH', ROOT_PATH . 'extend' . DS);
 defined('VENDOR_PATH') or define('VENDOR_PATH', ROOT_PATH . 'vendor' . DS);
 defined('RUNTIME_PATH') or define('RUNTIME_PATH', ROOT_PATH . 'runtime' . DS);
@@ -33,6 +33,7 @@ defined('ENV_PREFIX') or define('ENV_PREFIX', 'PHP_'); // 环境变量的配置�
 // 环境常量
 define('IS_CLI', PHP_SAPI == 'cli' ? true : false);
 define('IS_WIN', strpos(PHP_OS, 'WIN') !== false);
+
 
 // 载入Loader类
 require CORE_PATH . 'Loader.php';
@@ -61,7 +62,5 @@ if (is_file(ROOT_PATH . '.env')) {
 // 注册错误和异常处理机制
 \think\Error::register();
 
-// var_dump(include THINK_PATH . 'convention' . EXT);
 // 加载惯例配置文件
 \think\Config::set(include THINK_PATH . 'convention' . EXT);
-//$config[_sys_]增加convention中的配置

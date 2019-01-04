@@ -15,6 +15,6 @@ class Index extends Base
 {
     public function index()
     {
-    	/*return "<style tyepe='text/html'> h1{text-align:center} body{background:#BDB76B;margin:0} div{padding-top:10%}</style><div><h1>哈哈，来前台了</h1></div>";*/
+    	return "<style tyepe='text/html'> h1{text-align:center} body{background:#BDB76B;margin:0} div{padding-top:10%}</style><div><h1>哈哈，来前台了</h1></div>";
     }
 }

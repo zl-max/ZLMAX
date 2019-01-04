@@ -76,27 +76,23 @@ class App
      */
     public static function run(Request $request = null)
     {
-        //Request::instace()对Request初始化
-        $request = is_null($request) ? Request::instance() : $request;
+        $request = is_null($request) ? Request::instance() : $request;  //初始化Request
 
         try {
-            $config = self::initCommon();  //加载配置数组，助手函数，database和common文件等
-            // var_dump($config);
+            $config = self::initCommon();
+
             // 模块/控制器绑定
             if (defined('BIND_MODULE')) {
                 BIND_MODULE && Route::bind(BIND_MODULE);
             } elseif ($config['auto_bind_module']) {
                 // 入口自动绑定
-                // echo $request->baseFile().'<br>';
                 $name = pathinfo($request->baseFile(), PATHINFO_FILENAME);
-                // echo $name;
                 if ($name && 'index' != $name && is_dir(APP_PATH . $name)) {
                     Route::bind($name);
                 }
             }
 
             $request->filter($config['default_filter']);
-
 
             // 默认语言
             Lang::range($config['default_lang']);
@@ -110,22 +106,19 @@ class App
                 APP_PATH . 'lang' . DS . $request->langset() . EXT,
             ]);
 
-
             // 监听 app_dispatch
             Hook::listen('app_dispatch', self::$dispatch);
             // 获取应用调度信息
             $dispatch = self::$dispatch;
-            // var_dump($dispatch);
+
             // 未设置调度信息则进行 URL 路由检测
             if (empty($dispatch)) {
                 $dispatch = self::routeCheck($request, $config);
-                // var_dump($dispatch);
             }
 
             // 记录当前调度信息
             $request->dispatch($dispatch);
 
-            // echo self::$debug;
             // 记录路由和请求信息
             if (self::$debug) {
                 Log::record('[ ROUTE ] ' . var_export($dispatch, true), 'info');
@@ -142,12 +135,8 @@ class App
                 $config['request_cache_expire'],
                 $config['request_cache_except']
             );
-            // var_dump($dispatch);
-            // echo '<hr>';
-            // var_dump($config);
-            $data = self::exec($dispatch, $config);
 
-            // var_dump($data);            
+            $data = self::exec($dispatch, $config);
         } catch (HttpResponseException $exception) {
             $data = $exception->getResponse();
         }
@@ -155,7 +144,6 @@ class App
         // 清空类的实例化
         Loader::clearInstance();
 
-        // var_dump($data instanceof Response);
         // 输出数据到客户端
         if ($data instanceof Response) {
             $response = $data;
@@ -187,15 +175,14 @@ class App
             if (defined('APP_NAMESPACE')) {
                 self::$namespace = APP_NAMESPACE;
             }
+            //设置APP对应APP_PATH路径
+            Loader::addNamespace(self::$namespace, APP_PATH);  
 
-            Loader::addNamespace(self::$namespace, APP_PATH);  //加载APP的路径
-
-            // 初始化应用  获取配置的参数 config,database,以及common中的配置的数组和方法
-            $config       = self::init();  
-            // var_dump($config);
+            // 初始化应用
+            $config       = self::init();
             self::$suffix = $config['class_suffix'];
 
-            // 应用调试模式 环境变量优先级大于配置文件
+            // 应用调试模式
             self::$debug = Env::get('app_debug', Config::get('app_debug'));
 
             if (!self::$debug) {
@@ -213,13 +200,12 @@ class App
                 }
 
             }
-            //加载根命名空间
+
             if (!empty($config['root_namespace'])) {
                 Loader::addNamespace($config['root_namespace']);
             }
 
-            // 加载额外文件  加载助手函数
-            // var_dump($config['extra_file_list']);
+            // 加载额外文件
             if (!empty($config['extra_file_list'])) {
                 foreach ($config['extra_file_list'] as $file) {
                     $file = strpos($file, '.') ? $file : APP_PATH . $file . EXT;
@@ -261,7 +247,7 @@ class App
         } else {
             // 加载模块配置
             $config = Config::load(CONF_PATH . $module . 'config' . CONF_EXT);
-            //var_dump($config);
+
             // 读取数据库配置文件
             $filename = CONF_PATH . $module . 'database' . CONF_EXT;
             Config::load($filename, 'database');
@@ -269,15 +255,10 @@ class App
             // 读取扩展配置文件
             if (is_dir(CONF_PATH . $module . 'extra')) {
                 $dir   = CONF_PATH . $module . 'extra';
-                // echo $dir;
                 $files = scandir($dir);
-                // var_dump($files);
                 foreach ($files as $file) {
                     if ('.' . pathinfo($file, PATHINFO_EXTENSION) === CONF_EXT) {
                         $filename = $dir . DS . $file;
-                        // echo $filename;
-                        // echo pathinfo($file, PATHINFO_FILENAME);
-                        // queue.php文件
                         Config::load($filename, pathinfo($file, PATHINFO_FILENAME));
                     }
                 }
@@ -463,7 +444,6 @@ class App
      */
     protected static function exec($dispatch, $config)
     {
-        // var_dump($dispatch);
         switch ($dispatch['type']) {
             case 'redirect': // 重定向跳转
                 $data = Response::create($dispatch['url'], 'redirect')
@@ -513,11 +493,8 @@ class App
      */
     public static function module($result, $config, $convert = null)
     {
-        // var_dump($result);
         if (is_string($result)) {
-            $result = explode('/', $result);  //将字符串转化成数据
-
-            // var_dump($result);
+            $result = explode('/', $result);
         }
 
         $request = Request::instance();
@@ -526,8 +503,6 @@ class App
             // 多模块部署
             $module    = strip_tags(strtolower($result[0] ?: $config['default_module']));
             $bind      = Route::getBind('module');
-            // echo $module;
-            // var_dump($bind);
             $available = false;
 
             if ($bind) {
@@ -548,11 +523,7 @@ class App
             if ($module && $available) {
                 // 初始化模块
                 $request->module($module);
-                // var_dump($request->module($module));
                 $config = self::init($module);
-                // var_dump($config['database']);
-
-                // var_dump($config);
 
                 // 模块请求缓存检查
                 $request->cache(
@@ -584,16 +555,12 @@ class App
 
         // 获取操作名
         $actionName = strip_tags($result[2] ?: $config['default_action']);
-
-        // echo $config['action_convert'];
         if (!empty($config['action_convert'])) {
             $actionName = Loader::parseName($actionName, 1);
         } else {
             $actionName = $convert ? strtolower($actionName) : $actionName;
         }
 
-        // echo Loader::parseName($controller, 1);
-        // echo $controller;
         // 设置当前请求的控制器、操作
         $request->controller(Loader::parseName($controller, 1))->action($actionName);
 
@@ -635,11 +602,6 @@ class App
         }
 
         Hook::listen('action_begin', $call);
-
-         // 由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5.0和5.1版本，推荐尽快更新到最新版本。
-        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
-            throw new HttpException(404, 'controller not exists:' . $controller);
-        }
 
         return self::invokeMethod($call, $vars);
     }
